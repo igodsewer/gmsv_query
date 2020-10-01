@@ -19,7 +19,7 @@
 #include <utlvector.h>
 #include <bitbuf.h>
 #include <steam/steam_gameserver.h>
-#include <symbolfinder.hpp>
+#include <scanning/symbolfinder.hpp>
 #include <game/server/iplayerinfo.h>
 
 #if defined _WIN32
@@ -134,7 +134,7 @@ namespace netfilter
 		uint32_t last_reset;
 		uint32_t count;
 	};
-	
+
 	struct player_t
 	{
 		byte index;
@@ -160,7 +160,7 @@ namespace netfilter
 		PacketTypeInfo,
 		PacketTypePlayer,
 	};
-	
+
 	class CSteamGameServerAPIContext
 	{
 	public:
@@ -180,7 +180,7 @@ namespace netfilter
 #if defined SYSTEM_WINDOWS
 	static const char SteamGameServerAPIContext_sym[] = "\x2A\x2A\x2A\x2A\xE8\x2A\x2A\x2A\x2A\x6A\x00\x68\x2A\x2A\x2A\x2A\xFF\x55\x08\x83\xC4\x08\xA3";
 	static const size_t SteamGameServerAPIContext_symlen = sizeof(SteamGameServerAPIContext_sym) - 1;
-		
+
 	static const char FileSystemFactory_sym[] = "\x55\x8B\xEC\x68\x2A\x2A\x2A\x2A\xFF\x75\x08\xE8";
 	static const size_t FileSystemFactory_symlen = sizeof(FileSystemFactory_sym) - 1;
 
@@ -220,7 +220,7 @@ namespace netfilter
 
 	static std::string dedicated_binary = Helpers::GetBinaryFileName("dedicated", false, true, "bin/");
 	static SourceSDK::FactoryLoader server_loader("server", false, true, "garrysmod/bin/");
-	
+
 	static std::string server_binary = Helpers::GetBinaryFileName( "server", false, true, "garrysmod/bin/" );
 	static CSteamGameServerAPIContext *gameserver_context = nullptr;
 
@@ -318,7 +318,7 @@ namespace netfilter
 		reply_info.amt_clients = server->GetNumClients();
 		reply_info.amt_bots = server->GetNumFakeClients();
 		reply_info.passworded = server->GetPassword() != nullptr ? 1 : 0;
-		
+
 		ISteamGameServer *steamGS = gameserver_context != nullptr ?
 			gameserver_context->m_pSteamGameServer : nullptr;
 		reply_info.secure = steamGS != nullptr ? steamGS->BSecure() : false;
@@ -356,7 +356,7 @@ namespace netfilter
 		// if vac protected, it activates itself some time after startup
 		info_cache_packet.WriteByte(info.secure);
 		info_cache_packet.WriteString(info.game_version.c_str());
-		
+
 		bool notags = info.tags.empty();
 		// 0x80 - port number is present
 		// 0x10 - server steamid is present
@@ -625,7 +625,7 @@ namespace netfilter
 
 		if (lua->PCall(3, 1, 0) != 0)
 			lua->ErrorNoHalt("\n[%s] %s\n\n", hook, lua->GetString(-1));
-		
+
 		if (lua->IsType(-1, GarrysMod::Lua::Type::BOOL))
 		{
 			if (!lua->GetBool(-1))
@@ -640,7 +640,7 @@ namespace netfilter
 
 			int count = lua->ObjLen(-1);
 			newreply.count = count;
-			
+
 			std::vector<player_t> newPlayers(count);
 
 			for (int i = 0; i < count; i++)
@@ -661,7 +661,7 @@ namespace netfilter
 
 				lua->GetField(-1, "time");
 				newPlayer.time = lua->GetNumber(-1);
-				lua->Pop(1);				
+				lua->Pop(1);
 
 				lua->Pop(1);
 				newPlayers.at(i) = newPlayer;
@@ -853,7 +853,7 @@ namespace netfilter
 				filesystem_ptr = reinterpret_cast<IFileSystem **>(symfinder.ResolveOnBinary(
 					server_binary.c_str(), g_pFullFileSystem_sym, g_pFullFileSystem_symlen
 				));
-			
+
 			if( filesystem_ptr != nullptr )
 				filesystem = *filesystem_ptr;
 		}
@@ -864,14 +864,14 @@ namespace netfilter
 
 		if (filesystem == nullptr)
 			LUA->ThrowError("failed to initialize IFileSystem");
-		
+
 #if defined SYSTEM_WINDOWS
 			CSteamGameServerAPIContext **gameserver_context_pointer = reinterpret_cast<CSteamGameServerAPIContext **>(symfinder.ResolveOnBinary(
 				server_binary.c_str(),
 				SteamGameServerAPIContext_sym,
 				SteamGameServerAPIContext_symlen
 			));
-			
+
 			if(gameserver_context_pointer == nullptr)
 				LUA->ThrowError("Failed to load required CSteamGameServerAPIContext interface pointer.");
 
