@@ -739,6 +739,7 @@ namespace netfilter
 			return PacketTypeInfo;
 		if (type == 'U')
 			return PacketTypePlayer;
+		printf("got packet %c", type);
 		if (type == 's') {
 			printf("got packet");
 		}
