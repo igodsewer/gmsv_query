@@ -4,6 +4,7 @@
 #include <GarrysMod/Lua/LuaInterface.h>
 #include <GarrysMod/Interfaces.hpp>
 #include <stdint.h>
+#include <stdio.h>
 #include <stddef.h>
 #include <set>
 #include <queue>
@@ -158,8 +159,8 @@ namespace netfilter
 		PacketTypeInvalid = -1,
 		PacketTypeGood,
 		PacketTypeInfo,
-		PacketTypePlayer,
-		PacketTypeMS,
+		PacketTypePlayer
+		// PacketTypeMS,
 	};
 
 	class CSteamGameServerAPIContext
@@ -739,10 +740,8 @@ namespace netfilter
 			return PacketTypeInfo;
 		if (type == 'U')
 			return PacketTypePlayer;
-		if (type == 's') {
-			_DebugWarning("Hooray! Got MS packet");
-			return PacketTypeMS;
-		}
+		if (type == 's')
+			printf("Got MS packet!");
 		if (type == 'W')
 			return PacketTypeGood;// default challenge response
 
