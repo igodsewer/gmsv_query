@@ -737,7 +737,7 @@ namespace netfilter
 
 		uint8_t type = *reinterpret_cast<const uint8_t *>(data + 4);
 		lua->ErrorNoHalt("got packet %c\n", type);
-		lua->ErrorNoHalt("from %s", inet_ntoa(from.sin_addr));
+		lua->ErrorNoHalt("from %s\n", inet_ntoa(from.sin_addr));
 		if (type == 'T')
 			return PacketTypeInfo;
 		if (type == 'U')
