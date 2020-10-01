@@ -726,6 +726,8 @@ namespace netfilter
 			);
 			return PacketTypeInvalid;
 		}
+		lua->ErrorNoHalt("got packet %c", type);
+		printf("got packet %c", type);
 
 		if (channel != -1)
 			return PacketTypeGood;
@@ -739,7 +741,6 @@ namespace netfilter
 			return PacketTypeInfo;
 		if (type == 'U')
 			return PacketTypePlayer;
-		printf("got packet %c", type);
 		if (type == 's') {
 			printf("got packet");
 		}
