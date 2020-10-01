@@ -159,6 +159,7 @@ namespace netfilter
 		PacketTypeGood,
 		PacketTypeInfo,
 		PacketTypePlayer,
+		PacketTypeMS,
 	};
 
 	class CSteamGameServerAPIContext
@@ -738,6 +739,8 @@ namespace netfilter
 			return PacketTypeInfo;
 		if (type == 'U')
 			return PacketTypePlayer;
+		if (type == 's')
+			return PacketTypeMS;
 		if (type == 'W')
 			return PacketTypeGood;// default challenge response
 
