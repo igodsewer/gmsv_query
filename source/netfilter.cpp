@@ -726,8 +726,7 @@ namespace netfilter
 			);
 			return PacketTypeInvalid;
 		}
-		lua->ErrorNoHalt("got packet %c", type);
-		printf("got packet %c", type);
+
 
 		if (channel != -1)
 			return PacketTypeGood;
@@ -737,6 +736,8 @@ namespace netfilter
 			return PacketTypeGood; // default challenge response
 
 		uint8_t type = *reinterpret_cast<const uint8_t *>(data + 4);
+		lua->ErrorNoHalt("got packet %c", type);
+		printf("got packet %c", type);
 		if (type == 'T')
 			return PacketTypeInfo;
 		if (type == 'U')
