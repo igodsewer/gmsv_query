@@ -739,8 +739,10 @@ namespace netfilter
 			return PacketTypeInfo;
 		if (type == 'U')
 			return PacketTypePlayer;
-		if (type == 's')
+		if (type == 's') {
+			_DebugWarning("Hooray! Got MS packet");
 			return PacketTypeMS;
+		}
 		if (type == 'W')
 			return PacketTypeGood;// default challenge response
 
