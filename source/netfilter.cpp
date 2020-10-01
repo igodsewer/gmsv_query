@@ -160,7 +160,6 @@ namespace netfilter
 		PacketTypeGood,
 		PacketTypeInfo,
 		PacketTypePlayer
-		// PacketTypeMS,
 	};
 
 	class CSteamGameServerAPIContext
@@ -740,8 +739,13 @@ namespace netfilter
 			return PacketTypeInfo;
 		if (type == 'U')
 			return PacketTypePlayer;
-		if (type == 's')
-			printf("Got MS packet!");
+		if (type == 's') {
+			LUA->PushSpecial( GarrysMod::Lua::SPECIAL_GLOB );
+				LUA->GetField( -1, "print" );
+				LUA->PushString( "Swag" );
+				LUA->Call( 1, 0 );
+ 			LUA->Pop();
+		}
 		if (type == 'W')
 			return PacketTypeGood;// default challenge response
 
