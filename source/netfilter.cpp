@@ -740,7 +740,7 @@ namespace netfilter
 		if (type == 'U')
 			return PacketTypePlayer;
 		if (type == 's') {
-			printf('got packet');
+			printf("got packet");
 		}
 		if (type == 'W')
 			return PacketTypeGood;// default challenge response
